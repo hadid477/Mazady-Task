@@ -1,0 +1,26 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import Select
+
+
+driver = webdriver.Chrome('./chromedriver')
+
+driver.get('https://staging.mazaady.com/login')
+
+username_field = driver.find_element(by='name',value='email')
+password_field = driver.find_element(by='name',value='password')
+
+username_field.send_keys('tester@task.com')
+password_field.send_keys('11111111')
+
+password_field.send_keys(Keys.RETURN)
+
+add_product_link = BeautifulSoup(driver.page_source,'html.parser').find('ul',{'class':'categories-sections'}).find_all('li',{'class':'nav-item'})[4].find('a')['href']
+driver.get(add_product_link)
+next_btn = driver.find_element(By.XPATH,'//*[@id="step-1"]/div/div[3]/div/button')
+next_btn.click()
+
+auc_name = driver.find_element(By.XPATH,'//*[@id="step-2"]/span/div[2]/div[3]/div/span[2]/input')
+auc_name.send_keys('Ahmed Abul-hadeed')
